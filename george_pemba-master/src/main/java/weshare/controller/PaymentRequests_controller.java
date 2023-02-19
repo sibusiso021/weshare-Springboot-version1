@@ -23,6 +23,7 @@ import static weshare.model.MoneyHelper.amountOf;
 public class PaymentRequests_controller {
 
         @GetMapping("/paymentrequests")
+
         public static final Handler view = context -> {
             ExpenseDAO expensesDAO = ServiceRegistry.lookup(ExpenseDAO.class);
             String[] id = context.queryString().split("=");
