@@ -9,6 +9,7 @@ import weshare.persistence.ExpenseDAO;
 import weshare.server.Routes;
 import weshare.server.ServiceRegistry;
 import weshare.server.WeShareServer;
+import weshare.services.ExpenseDaoService;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -25,9 +26,9 @@ import static weshare.model.MoneyHelper.amountOf;
 @RequestMapping("expenses")
 public class ExpensesController {
 
-    private final ExpenseDAO expenseDAO;
+    private final ExpenseDaoService expenseDAO;
     //create a constructor to inject dependencies(constructor injection)
-    public ExpensesController(ExpenseDAO expenseDAO) {
+    public ExpensesController(ExpenseDaoService expenseDAO) {
         this.expenseDAO = expenseDAO;
     }
     //you were about to do a view method that will handle the getmapping request
