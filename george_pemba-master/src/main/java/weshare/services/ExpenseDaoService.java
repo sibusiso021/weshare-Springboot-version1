@@ -1,5 +1,7 @@
 package weshare.services;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Service;
 import weshare.model.Expense;
 import weshare.model.PaymentRequest;
 import weshare.model.Person;
@@ -7,6 +9,7 @@ import weshare.model.Person;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+
 
 public interface ExpenseDaoService {
     Collection<Expense> findExpensesForPerson(Person person);

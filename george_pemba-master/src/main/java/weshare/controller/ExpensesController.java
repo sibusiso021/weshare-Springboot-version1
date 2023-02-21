@@ -1,6 +1,7 @@
 package weshare.controller;
 
 import io.javalin.http.Handler;
+import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import weshare.model.Expense;
@@ -22,6 +23,7 @@ import static weshare.model.MoneyHelper.amountOf;
 // this annotation just like spring mvc controller allows me to handle incoming http requests
 
 //
+
 @RestController
 @RequestMapping("expenses")
 public class ExpensesController {

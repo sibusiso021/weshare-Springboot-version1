@@ -1,5 +1,7 @@
 package weshare.services.impl;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Component;
 import weshare.model.Person;
 import weshare.services.PersonDaoService;
 
@@ -7,6 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 
 public class PersonDoaImpl implements PersonDaoService {
     private final Set<Person> setOfPeople;

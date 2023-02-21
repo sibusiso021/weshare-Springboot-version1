@@ -1,5 +1,7 @@
 package weshare.services.impl;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Component;
 import weshare.model.Expense;
 import weshare.model.PaymentRequest;
 import weshare.model.Person;
@@ -11,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
 
 public class ExpenseDaoImpl implements ExpenseDaoService {
     private final Map<UUID, Expense> expenses;
