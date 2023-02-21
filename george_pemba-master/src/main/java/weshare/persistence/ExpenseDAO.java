@@ -16,9 +16,12 @@ import java.util.UUID;
 public interface ExpenseDAO {
     Collection<Expense> findExpensesForPerson(Person person);
 
+
     Expense save(Expense expense);
 
+
     Optional<Expense> get(UUID id);
+
 
     Collection<PaymentRequest> findPaymentRequestsSent(Person person);
 

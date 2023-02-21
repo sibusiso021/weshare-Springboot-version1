@@ -20,7 +20,8 @@ import static weshare.model.MoneyHelper.amountOf;
 // meaning Every request handling method of the controller class automatically serializes return objects into HttpResponse.
 // this annotation just like spring mvc controller allows me to handle incoming http requests
 
-//
+
+
 @RestController
 @RequestMapping("expenses")
 public class ExpensesController {
@@ -33,6 +34,7 @@ public class ExpensesController {
     //you were about to do a view method that will handle the getmapping request
     //In the paramerters of the view method the Model object is part of the mvc architecuture will use it to pass data to be used
     // from the controller to the view
+
     @GetMapping("/expenses")
     public String view(Model model){
         Person PersonLoggedIn = WeShareServer.getPersonLoggedIn();
@@ -57,7 +59,7 @@ public class ExpensesController {
     }
 
 
-    //
+
 
 
 
