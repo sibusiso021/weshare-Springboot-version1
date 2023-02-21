@@ -1,10 +1,8 @@
 package weshare.controller;
 
 import io.javalin.http.Handler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import weshare.model.Expense;
 import weshare.model.Person;
 import weshare.persistence.ExpenseDAO;
@@ -32,40 +30,37 @@ public class ExpensesController {
     public ExpensesController(ExpenseDAO expenseDAO) {
         this.expenseDAO = expenseDAO;
     }
-    //you where a view mthod that will handle the getmapping request
-
-
-//
+    //you were about to do a view method that will handle the getmapping request
+    //In the paramerters of the view method the Model object is part of the mvc architecuture will use it to pass data to be used
+    // from the controller to the view
     @GetMapping("/expenses")
-    public static final Handler view = context -> {
-        ExpenseDAO expensesDAO = ServiceRegistry.lookup(ExpenseDAO.class);
-        Person personLoggedIn = WeShareServer.getPersonLoggedIn(context);
-
+    public String view(Model model){
+        Person PersonLoggedIn = WeShareServer.getPersonLoggedIn();
         Collection<Expense> expenses = expensesDAO.findExpensesForPerson(personLoggedIn);
-        int total = 0;
-        for (Expense expense: expenses
-        ) {
-            total += expense.totalAmountAvailableForPaymentRequests().getNumber().intValue();
-
-        }
-        Map<String, Object> viewModel = Map.of("expenses", expenses, "nettTotal", amountOf(total));
-        context.render("expenses.html", viewModel);
-
+        int total = expenses.stream().mapToInt(expense -> expense.totalAmountAvailableForPaymentRequests().getNumber().intValue()).sum();
+        model.addAttribute("expenses", expenses);
+        model.addAttribute("nettTotal", amountOf(total));
+        return "expenses";
     };
 
     @PostMapping("/expenses/add")
-
-    public static final Handler addNewExpense = context -> {
-        ExpenseDAO expensesDAO = ServiceRegistry.lookup(ExpenseDAO.class);
-        Person personLoggedIn = WeShareServer.getPersonLoggedIn(context);
-
-        String description = context.formParamAsClass("description", String.class).get();
-        LocalDate date = LocalDate.parse(context.formParamAsClass("date", String.class).get(), DD_MM_YYYY);
-        int amount = context.formParamAsClass("amount", int.class).get();
-        Expense expense = new Expense(personLoggedIn, description, amountOf(amount), date);
+    public String addNewExpense(@RequestParam("date") String date, @RequestParam("amount") int amount, @RequestParam("DESCRIPTION") String description) {
+        Person PersonLoggedIn = WeShareServer.getPersonLoggedIn();
+        Expense expense = new Expense(PersonLoggedIn, description, amountOf(amount), LocalDate.parse(date, DD_MM_YYYY));
         expensesDAO.save(expense);
-        context.redirect(Routes.EXPENSES);
+        return "redirect:" + Routes.EXPENSES;
     };
+
+
+
+
+    }
+
+
+    //
+
+
+
 
 
 }
