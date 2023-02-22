@@ -1,14 +1,18 @@
 package weshare.controller;
 
 import io.javalin.http.Handler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import weshare.model.Expense;
 import weshare.model.Person;
-import weshare.persistence.ExpenseDAO;
+//import weshare.persistence.ExpenseDAO;
 import weshare.server.Routes;
 import weshare.server.ServiceRegistry;
 import weshare.server.WeShareServer;
+import weshare.services.ExpenseDaoService;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -22,13 +26,17 @@ import static weshare.model.MoneyHelper.amountOf;
 
 
 
+
+
+
 @RestController
 @RequestMapping("expenses")
 public class ExpensesController {
 
-    private final ExpenseDAO expenseDAO;
+    @Autowired
+    private final ExpenseDaoService expenseDAO;
     //create a constructor to inject dependencies(constructor injection)
-    public ExpensesController(ExpenseDAO expenseDAO) {
+    public ExpensesController(ExpenseDaoService expenseDAO) {
         this.expenseDAO = expenseDAO;
     }
     //you were about to do a view method that will handle the getmapping request
@@ -38,7 +46,7 @@ public class ExpensesController {
     @GetMapping("/expenses")
     public String view(Model model){
         Person PersonLoggedIn = WeShareServer.getPersonLoggedIn();
-        Collection<Expense> expenses = expensesDAO.findExpensesForPerson(personLoggedIn);
+        Collection<Expense> expenses = expenseDAO.findExpensesForPerson(personLoggedIn);
         int total = expenses.stream().mapToInt(expense -> expense.totalAmountAvailableForPaymentRequests().getNumber().intValue()).sum();
         model.addAttribute("expenses", expenses);
         model.addAttribute("nettTotal", amountOf(total));
@@ -46,10 +54,10 @@ public class ExpensesController {
     };
 
     @PostMapping("/expenses/add")
-    public String addNewExpense(@RequestParam("date") String date, @RequestParam("amount") int amount, @RequestParam("DESCRIPTION") String description) {
+    public String addNewExpense(@RequestParam("date") String date, @RequestParam("amount") int amount, @RequestParam("description") String description) {
         Person PersonLoggedIn = WeShareServer.getPersonLoggedIn();
         Expense expense = new Expense(PersonLoggedIn, description, amountOf(amount), LocalDate.parse(date, DD_MM_YYYY));
-        expensesDAO.save(expense);
+        expenseDAO.save(expense);
         return "redirect:" + Routes.EXPENSES;
     };
 

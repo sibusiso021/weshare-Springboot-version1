@@ -1,6 +1,9 @@
 package weshare.controller;
 
 import io.javalin.http.Handler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import weshare.model.MoneyHelper;
 import weshare.model.PaymentRequest;
 import weshare.model.Person;
@@ -15,18 +18,22 @@ import static weshare.model.MoneyHelper.amountOf;
 
 public class RequestSentController {
 
-    public static final Handler view = context -> {
-        ExpenseDAO expensesDAO = ServiceRegistry.lookup(ExpenseDAO.class);
+    @Autowired
+    private ExpenseDAO expenseDAO;
+
+    @GetMapping("/sentRequest")
+    public String viewSentRequest(Model model){
         Person personLoggedIn = WeShareServer.getPersonLoggedIn(context);
 
         Collection<PaymentRequest> sentPaymentRequests = expensesDAO.findPaymentRequestsSent(personLoggedIn);
-
         MonetaryAmount total = amountOf(0);
         for (PaymentRequest paymentRequest: sentPaymentRequests) {
             total = total.add(paymentRequest.getAmountToPay());
         }
+        model.addAttribute("sentRequests", sentPaymentRequests);
+        model.addAttribute("total", total);
 
-        Map<String, Object> viewModel = Map.of("sentRequests", sentPaymentRequests, "total", total);
-        context.render("paymentrequests_sent.html", viewModel);
-    };
+        return  "paymentrequest_sent";
+    }
+
 }

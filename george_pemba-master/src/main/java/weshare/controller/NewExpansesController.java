@@ -1,29 +1,37 @@
 package weshare.controller;
 
-import io.javalin.http.Handler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import weshare.model.Expense;
 import weshare.model.Person;
-import weshare.persistence.ExpenseDAO;
 import weshare.server.ServiceRegistry;
 import weshare.server.WeShareServer;
+import weshare.services.ExpenseDaoService;
 
 import java.util.Collection;
-import java.util.Map;
 
 @RestController
-@RequestMapping("newexpenses")
+@RequestMapping("/expenses")
 public class NewExpansesController {
+    @Autowired
+    private final ExpenseDaoService expenseDAO;
+
+    public NewExpansesController(ExpenseDaoService expenseDAO) {
+        this.expenseDAO = expenseDAO;
+    }
 
     @GetMapping("/expenses")
-    public static final Handler view = context -> {
-        ExpenseDAO expensesDAO = ServiceRegistry.lookup(ExpenseDAO.class);
-        Person personLoggedIn = WeShareServer.getPersonLoggedIn(context);
+    public String view(Model model){
+        ExpenseDaoService expensesDAO = ServiceRegistry.lookup(ExpenseDaoService.class);
+        Person personLoggedIn = WeShareServer.getPersonLoggedIn();
 
-        Collection<Expense> expenses = expensesDAO.findExpensesForPerson(personLoggedIn);
-        Map<String, Object> viewModel = Map.of("newexpenses", expenses);
-        context.render("new_expense.html", viewModel);
+        Collection<Expense> expenses = expenseDAO.findExpensesForPerson(personLoggedIn);
+
+        model.addAttribute("newexpenses", expenses);
+
+        return "new_expenses";
     };
 }

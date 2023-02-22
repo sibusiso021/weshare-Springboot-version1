@@ -7,6 +7,10 @@ package weshare.model;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public class Person {
