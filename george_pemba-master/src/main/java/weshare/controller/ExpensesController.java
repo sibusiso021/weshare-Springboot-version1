@@ -39,7 +39,7 @@ public class ExpensesController {
 
     @GetMapping("/expenses")
     public String view(Model model){
-        String personId = "342434234"; // Get the person ID from Camunda
+        String personId = "123"; // Get the person ID from Camunda
         ;
         Person personLoggedIn = personService.findPersonById(personId);
         Collection<Expense> expenses = expenseDAO.findExpensesForPerson(personLoggedIn);
@@ -51,7 +51,7 @@ public class ExpensesController {
 
     @PostMapping("/expenses/add")
     public String addNewExpense(@RequestParam("date") String date, @RequestParam("amount") int amount, @RequestParam("description") String description) {
-        String personId = "342434234";
+        String personId = "123";
         Person personLoggedIn = personService.findPersonById(personId);
         Expense expense = new Expense(personLoggedIn, description, amountOf(amount), LocalDate.parse(date, DD_MM_YYYY));
         expenseDAO.save(expense);

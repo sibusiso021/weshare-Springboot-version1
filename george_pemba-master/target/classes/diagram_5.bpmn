@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0vdfbfj" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.9.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="new_expesne_process" name="New_Expense_Process" isExecutable="true">
+    <bpmn:startEvent id="start" name="Start">
+      <bpmn:outgoing>Flow_0uult3t</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0uult3t" sourceRef="start" targetRef="view_expenses" />
+    <bpmn:sequenceFlow id="Flow_0gal7zd" sourceRef="view_expenses" targetRef="add_expense" />
+    <bpmn:sequenceFlow id="Flow_02errwt" sourceRef="add_expense" targetRef="save_expense" />
+    <bpmn:endEvent id="end" name="End">
+      <bpmn:incoming>Flow_1d6ifv5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1d6ifv5" sourceRef="save_expense" targetRef="end" />
+    <bpmn:userTask id="view_expenses" name="View Expenses">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="personId" label="Person ID" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0uult3t</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gal7zd</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="add_expense" name="Add Expense">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="date" label="Date" type="string" />
+          <camunda:formField id="amount" label="Amount" type="long" />
+          <camunda:formField id="description" label="Description" type="string" />
+          <camunda:formField id="personId" label="Person ID" type="string" />
+          <camunda:formField id="userEmail" label="User Email" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0gal7zd</bpmn:incoming>
+      <bpmn:outgoing>Flow_02errwt</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="save_expense" name="Save Expense" camunda:class="weshare.delegation.SaveExpenseDelegate">
+      <bpmn:incoming>Flow_02errwt</bpmn:incoming>
+      <bpmn:outgoing>Flow_1d6ifv5</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="new_expesne_process">
+      <bpmndi:BPMNEdge id="Flow_0uult3t_di" bpmnElement="Flow_0uult3t">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gal7zd_di" bpmnElement="Flow_0gal7zd">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02errwt_di" bpmnElement="Flow_02errwt">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="590" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1d6ifv5_di" bpmnElement="Flow_1d6ifv5">
+        <di:waypoint x="690" y="117" />
+        <di:waypoint x="752" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="185" y="142" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0s9n94z_di" bpmnElement="end">
+        <dc:Bounds x="752" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="760" y="142" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0k58aij_di" bpmnElement="view_expenses">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v5nx07_di" bpmnElement="add_expense">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08z0yxq_di" bpmnElement="save_expense">
+        <dc:Bounds x="590" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

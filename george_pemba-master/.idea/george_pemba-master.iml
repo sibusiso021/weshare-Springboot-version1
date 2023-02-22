@@ -2,12 +2,8 @@
 <module version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/src/test/java/weshare/persistence/collectionbased" />
-      <excludeFolder url="file://$MODULE_DIR$/src/test/java/weshare/model" />
-      <excludeFolder url="file://$MODULE_DIR$/src/test/java/weshare/webtests" />
-      <excludeFolder url="file://$MODULE_DIR$/src/main/java/weshare/persistence" />
-      <excludeFolder url="file://$MODULE_DIR$/src/test/java/weshare/server" />
-      <excludeFolder url="file://$MODULE_DIR$/src/test/java/weshare/persistence" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/resources/templates" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/resources/html" />
     </content>
   </component>
 </module>
