@@ -1,0 +1,13 @@
+
+_
+java:S1192/"IDefine a constant instead of duplicating this literal "expenses" 3 times.(Ø¨ø„
+Q	java:S125
+"<This block of commented-out lines of code should be removed.(ö¢¥â
+7
+java:S1116+"Remove this empty statement.(Åñ­õþÿÿÿÿ
+7
+java:S11162"Remove this empty statement.(ôŸŽìúÿÿÿÿ
+7
+java:S1116;"Remove this empty statement.(ôŸŽìúÿÿÿÿ
+E
+java:S1128"*Remove this unused import 'java.util.Map'.(¼è½Òþÿÿÿÿ

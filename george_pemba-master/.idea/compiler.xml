@@ -8,8 +8,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="weshare-mvc-exercise" />
-        <module name="george_pemba-master" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="george_pemba-master" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

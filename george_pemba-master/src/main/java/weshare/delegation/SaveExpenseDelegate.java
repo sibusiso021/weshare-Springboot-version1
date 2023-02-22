@@ -23,17 +23,23 @@ public class SaveExpenseDelegate implements JavaDelegate {
     @Autowired
     private PersonService personService;
 
+    public SaveExpenseDelegate(ExpenseDaoService expenseDAO, PersonService personService) {
+        this.expenseDAO = expenseDAO;
+        this.personService = personService;
+    }
+
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        // Get variables from the execution
-        String date = (String) execution.getVariable("date");
-        int amount = (int) execution.getVariable("amount");
-        String description = (String) execution.getVariable("description");
         String personId = (String) execution.getVariable("personId");
-        String userEmail = (String) execution.getVariable("userEmail");
         Person personLoggedIn = personService.findPersonById(personId);
+        String date = (String) execution.getVariable("date");
+        long amount = (long) execution.getVariable("amount");
+        String description = (String) execution.getVariable("description");
+        ;
+        String userEmail = (String) execution.getVariable("userEmail");
 
-        // Create and save the new expense
+
+
         Expense expense = new Expense(personLoggedIn, description, amountOf(amount), LocalDate.parse(date, DD_MM_YYYY));
         expenseDAO.save(expense);
     }
