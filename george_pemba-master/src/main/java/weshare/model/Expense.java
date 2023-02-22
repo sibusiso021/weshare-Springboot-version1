@@ -10,6 +10,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import org.javamoney.moneta.Money;
 import org.javamoney.moneta.function.MonetaryFunctions;
+import org.springframework.stereotype.Service;
 
 import javax.money.MonetaryAmount;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static weshare.model.MoneyHelper.ZERO_RANDS;
-
+@Service
 public class Expense {
     private final Person person;
     private final String description;
