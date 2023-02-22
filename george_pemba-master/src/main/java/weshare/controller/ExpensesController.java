@@ -1,18 +1,15 @@
 package weshare.controller;
 
-import io.javalin.http.Handler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import weshare.model.Expense;
 import weshare.model.Person;
-//import weshare.persistence.ExpenseDAO;
-import weshare.server.Routes;
-import weshare.server.ServiceRegistry;
-import weshare.server.WeShareServer;
+
+//import weshare.server.WeShareServer;
 import weshare.services.ExpenseDaoService;
+import weshare.services.PersonService;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -24,20 +21,17 @@ import static weshare.model.MoneyHelper.amountOf;
 // meaning Every request handling method of the controller class automatically serializes return objects into HttpResponse.
 // this annotation just like spring mvc controller allows me to handle incoming http requests
 
-
-
-
-
-
 @RestController
 @RequestMapping("expenses")
 public class ExpensesController {
 
-    @Autowired
     private final ExpenseDaoService expenseDAO;
-    //create a constructor to inject dependencies(constructor injection)
-    public ExpensesController(ExpenseDaoService expenseDAO) {
+    private final PersonService personService;
+
+    @Autowired
+    public ExpensesController(ExpenseDaoService expenseDAO, PersonService personService) {
         this.expenseDAO = expenseDAO;
+        this.personService = personService;
     }
     //you were about to do a view method that will handle the getmapping request
     //In the paramerters of the view method the Model object is part of the mvc architecuture will use it to pass data to be used
@@ -45,7 +39,9 @@ public class ExpensesController {
 
     @GetMapping("/expenses")
     public String view(Model model){
-        Person PersonLoggedIn = WeShareServer.getPersonLoggedIn();
+        String personId = "342434234"; // Get the person ID from Camunda
+        ;
+        Person personLoggedIn = personService.findPersonById(personId);
         Collection<Expense> expenses = expenseDAO.findExpensesForPerson(personLoggedIn);
         int total = expenses.stream().mapToInt(expense -> expense.totalAmountAvailableForPaymentRequests().getNumber().intValue()).sum();
         model.addAttribute("expenses", expenses);
@@ -55,10 +51,11 @@ public class ExpensesController {
 
     @PostMapping("/expenses/add")
     public String addNewExpense(@RequestParam("date") String date, @RequestParam("amount") int amount, @RequestParam("description") String description) {
-        Person PersonLoggedIn = WeShareServer.getPersonLoggedIn();
-        Expense expense = new Expense(PersonLoggedIn, description, amountOf(amount), LocalDate.parse(date, DD_MM_YYYY));
+        String personId = "342434234";
+        Person personLoggedIn = personService.findPersonById(personId);
+        Expense expense = new Expense(personLoggedIn, description, amountOf(amount), LocalDate.parse(date, DD_MM_YYYY));
         expenseDAO.save(expense);
-        return "redirect:" + Routes.EXPENSES;
+        return "expenses";
     };
 
 
@@ -73,4 +70,3 @@ public class ExpensesController {
 
 
 
-}

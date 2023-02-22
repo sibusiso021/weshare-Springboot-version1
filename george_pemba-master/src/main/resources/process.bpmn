@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.omg.org/spec/DD/20100524/DC DC.xsd http://www.omg.org/spec/DD/20100524/DI DI.xsd"
+                  id="definitions">
+
+  <bpmn:process id="expenses_process" name="Expenses Process">
+
+    <bpmn:startEvent id="start" name="Start" />
+
+    <bpmn:sequenceFlow id="flow1" sourceRef="start" targetRef="view_expenses" />
+
+    <bpmn:userTask id="view_expenses" name="View Expenses">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="personId" label="Person ID" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>flow1</bpmn:incoming>
+      <bpmn:outgoing>flow2</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:sequenceFlow id="flow2" sourceRef="view_expenses" targetRef="add_expense" />
+
+    <bpmn:userTask id="add_expense" name="Add Expense">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="date" label="Date" type="string" />
+          <camunda:formField id="amount" label="Amount" type="long" />
+          <camunda:formField id="description" label="Description" type="string" />
+          <camunda:formField id="personId" label="Person ID" type="string" />
+          <camunda:formField id="userEmail" label="User Email" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>flow2</bpmn:incoming>
+      <bpmn:outgoing>flow3</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:sequenceFlow id="flow3" sourceRef="add_expense" targetRef="save_expense" />
+
+    <bpmn:serviceTask id="save_expense" name="Save Expense" camunda:class="weshare.delegation.SaveExpenseDelegate">
+      <bpmn:incoming>flow3</bpmn:incoming>
+      <bpmn:outgoing>flow4</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:endEvent id="end" name="End">
+      <bpmn:incoming>flow4</bpmn:incoming>
+    </bpmn:endEvent>
+
+  </bpmn:process>
+
+</bpmn:definitions>
+``
